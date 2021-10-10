@@ -5,13 +5,27 @@ require 'sinatra/reloader'
 class RockPaperScissors < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
+    enable :sessions
   end
   get '/' do
-    'ROCK SCISSORS PAPERS'
+    erb :index
   end
-  get '/rsp' do
-    @name = ["Michelle", "Malu", "Henry"].sample
-    erb(:index)
+  get '/names' do
+    session[:Player] = params[:player_name]
+    erb :play
+    redirect '/play'
+    #"Hello World"
+  end
+  post '/names' do
+    session[:Player] = params[:player_name]
+    erb :play
+    redirect '/play'
+    #"Hello World"
+  end
+  get '/play' do
+    @player = session[:player_name]
+    erb :play
+    #"Hello World"
   end
   run! if app_file == $0
 end
